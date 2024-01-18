@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
 using Repository;
 using Repository.Contracts;
+using Shared.Options;
 
 namespace Credo.API.Extensions;
 
@@ -26,7 +27,12 @@ public static class ServiceExtensions
 
     public static void ConfigureRepository(this IServiceCollection services) =>
         services.AddScoped<IRepositoryManager, RepositoryManager>();
-    
+
+    public static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+    }
+
     public static void ConfigureMediator(this IServiceCollection services) => 
         services.AddMediatR(configuration =>
             configuration.RegisterServicesFromAssembly(typeof(ApplicationAssembly).Assembly));

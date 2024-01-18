@@ -30,7 +30,7 @@ public static class ExceptionMiddlewareExtensions
                     if (context.Response.StatusCode == StatusCodes.Status500InternalServerError)
                     {
                         logger.LogError(contextFeature.Error, "SOMETHING_WENT_WRONG");
-                        error.Message = "INTERNAL_ERROR";
+                        error.Message = contextFeature.Error.Message;
                     }
                     else
                         logger.LogWarning("{customError}", error);

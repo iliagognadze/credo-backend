@@ -25,8 +25,5 @@ public class UserForCreationDto
     public string Password { get; set; } = null!;
 
     [Required(ErrorMessage = "BirthDate is a required field.")]
-    public DateTime BirthDate { get; set; } 
-    
-    [MaxLength(50, ErrorMessage = "Status is a required field.")]
-    public string? Status { get; set; }
+    public DateTime BirthDate { get; set; }
 }
