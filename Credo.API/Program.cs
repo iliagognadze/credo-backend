@@ -6,7 +6,7 @@ using Shared.DTOs;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureSqlContext(builder.Configuration);
-OptionsServiceCollectionExtensions.ConfigureOptions(builder.Services, builder.Configuration);
+builder.Services.ConfigureOptions(builder.Services, builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureRepository();
 builder.Services.ConfigureMediator();

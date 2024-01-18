@@ -9,3 +9,4 @@ C:\Users\iliag\source\repos\Credo\Credo.Application\obj\Debug\net7.0\Credo.Appli
 C:\Users\iliag\source\repos\Credo\Credo.Application\obj\Debug\net7.0\refint\Credo.Application.dll
 C:\Users\iliag\source\repos\Credo\Credo.Application\obj\Debug\net7.0\Credo.Application.pdb
 C:\Users\iliag\source\repos\Credo\Credo.Application\obj\Debug\net7.0\ref\Credo.Application.dll
+C:\Users\iliag\source\repos\Credo\Credo.Application\obj\Debug\net7.0\Credo.Application.csproj.AssemblyReference.cache

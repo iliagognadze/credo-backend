@@ -9,3 +9,7 @@ C:\Users\iliag\source\repos\Credo\Repository.Contracts\obj\Debug\net7.0\Reposito
 C:\Users\iliag\source\repos\Credo\Repository.Contracts\obj\Debug\net7.0\refint\Repository.Contracts.dll
 C:\Users\iliag\source\repos\Credo\Repository.Contracts\obj\Debug\net7.0\Repository.Contracts.pdb
 C:\Users\iliag\source\repos\Credo\Repository.Contracts\obj\Debug\net7.0\ref\Repository.Contracts.dll
+C:\Users\iliag\source\repos\Credo\Repository.Contracts\bin\Debug\net7.0\Entities.dll
+C:\Users\iliag\source\repos\Credo\Repository.Contracts\bin\Debug\net7.0\Entities.pdb
+C:\Users\iliag\source\repos\Credo\Repository.Contracts\obj\Debug\net7.0\Repository.Contracts.csproj.AssemblyReference.cache
+C:\Users\iliag\source\repos\Credo\Repository.Contracts\obj\Debug\net7.0\Repository.Contracts.csproj.CopyComplete

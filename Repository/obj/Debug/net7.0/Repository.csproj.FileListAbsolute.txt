@@ -10,3 +10,8 @@ C:\Users\iliag\source\repos\Credo\Repository\obj\Debug\net7.0\Repository.dll
 C:\Users\iliag\source\repos\Credo\Repository\obj\Debug\net7.0\refint\Repository.dll
 C:\Users\iliag\source\repos\Credo\Repository\obj\Debug\net7.0\Repository.pdb
 C:\Users\iliag\source\repos\Credo\Repository\obj\Debug\net7.0\ref\Repository.dll
+C:\Users\iliag\source\repos\Credo\Repository\bin\Debug\net7.0\Entities.dll
+C:\Users\iliag\source\repos\Credo\Repository\bin\Debug\net7.0\Repository.Contracts.dll
+C:\Users\iliag\source\repos\Credo\Repository\bin\Debug\net7.0\Repository.Contracts.pdb
+C:\Users\iliag\source\repos\Credo\Repository\bin\Debug\net7.0\Entities.pdb
+C:\Users\iliag\source\repos\Credo\Repository\obj\Debug\net7.0\Repository.csproj.CopyComplete
