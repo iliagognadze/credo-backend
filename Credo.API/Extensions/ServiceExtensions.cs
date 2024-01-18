@@ -16,11 +16,6 @@ public static class ServiceExtensions
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "credo", Version = "v1" });
         });
     }
-    
-    public static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
-    {
-        
-    }
 
     public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
         services.AddDbContext<RepositoryContext>(opts =>
