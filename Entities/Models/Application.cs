@@ -8,6 +8,10 @@ public class Application
 {
     [Column("id")]
     public int Id { get; set; }
+    
+    [Column("user_id")]
+    [ForeignKey(nameof(User))]
+    public int UserId { get; set; }
 
     [Column("loan_type")]
     [Required(ErrorMessage = "LoanType is a required field.")]
@@ -40,4 +44,6 @@ public class Application
     [Column("updated_at")]
     [Required(ErrorMessage = "UpdatedAt is a required field.")]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    
+    public User? User { get; set; }
 }

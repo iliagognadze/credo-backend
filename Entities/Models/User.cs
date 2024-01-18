@@ -47,4 +47,6 @@ public class User
     [Column("created_at")]
     [Required(ErrorMessage = "CreatedAt is a required field.")]
     public DateTime CreatedAt = DateTime.UtcNow;
+    
+    public ICollection<Application>? Applications { get; set; }
 }

@@ -2,5 +2,8 @@
 
 public interface IRepositoryManager
 {
-    public Task SaveChangesAsync();
+    IUserRepository User { get; }
+    IApplicationRepository Application { get; }
+    
+    Task SaveChangesAsync();
 }

@@ -4,8 +4,19 @@ namespace Repository;
 
 public class RepositoryManager : IRepositoryManager
 {
-    public Task SaveChangesAsync()
+    private readonly RepositoryContext _repositoryContext;
+    private readonly Lazy<IUserRepository> _userRepository;
+    private readonly Lazy<IApplicationRepository> _applicationRepository;
+
+    public RepositoryManager(RepositoryContext repositoryContext)
     {
-        throw new NotImplementedException();
+        _repositoryContext = repositoryContext;
+        _userRepository = new Lazy<IUserRepository>(() => new UserRepository(repositoryContext));
+        _applicationRepository = new Lazy<IApplicationRepository>(() => new ApplicationRepository(repositoryContext));
     }
+
+    public IUserRepository User => _userRepository.Value;
+    public IApplicationRepository Application => _applicationRepository.Value;
+
+    public async Task SaveChangesAsync() => await _repositoryContext.SaveChangesAsync();
 }

@@ -231,7 +231,11 @@
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\iliag\\source\\repos\\Credo\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\Users\\iliag\\source\\repos\\Credo\\Entities\\Entities.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
