@@ -1,4 +1,5 @@
-﻿using Credo.Application;
+﻿using System.Reflection;
+using Credo.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
@@ -25,6 +26,9 @@ public static class ServiceExtensions
                 options.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "public");
             }));
 
+    public static void ConfigureAutoMapper(this IServiceCollection services) =>
+        services.AddAutoMapper(Assembly.GetEntryAssembly());
+    
     public static void ConfigureRepository(this IServiceCollection services) =>
         services.AddScoped<IRepositoryManager, RepositoryManager>();
 

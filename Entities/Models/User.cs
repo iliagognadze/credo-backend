@@ -12,7 +12,7 @@ public class User
 
     [Column("private_number")]
     [Required(ErrorMessage = "PrivateNumber is a required field.")]
-    [MaxLength(9, ErrorMessage = "PrivateNumber max length is 9.")]
+    [MaxLength(11, ErrorMessage = "PrivateNumber max length is 11.")]
     public string PrivateNumber { get; set; } = null!;
 
     [Column("email")]

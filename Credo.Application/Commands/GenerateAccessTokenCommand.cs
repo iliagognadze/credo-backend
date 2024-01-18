@@ -1,6 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Credo.Application.Extensions;
+using Entities.Constants;
 using Entities.Exceptions;
 using Entities.Models;
 using MediatR;
@@ -45,10 +48,16 @@ public class GenerateAccessTokenCommandHandler : IRequestHandler<GenerateAccessT
 
         var expires = DateTime.Now.AddMinutes(120);
         
+        var claims = new[] {
+            new Claim(UserClaims.UserId, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+        
         var token = new JwtSecurityToken(
             _jwtSettings.Issuer!,
             _jwtSettings.Audience!,
-            null,
+            claims,
             expires: expires,
             signingCredentials: credentials);
 
@@ -65,22 +74,10 @@ public class GenerateAccessTokenCommandHandler : IRequestHandler<GenerateAccessT
 
     private async Task<User> CheckUser(string email, string password, CancellationToken cancellationToken)
     {
-        var hashedPassword = HashPassword(password);
+        var hashedPassword = password.HashPassword();
 
         var user = await _repository.User.GetAsync(email, hashedPassword, cancellationToken);
 
         return user ?? throw new UserInvalidCredentialsException();
-    }
-    
-    private static string HashPassword(string password)
-    {
-        var salt = RandomNumberGenerator.GetBytes(128 / 8); 
-        
-        return Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: password!,
-            salt: salt,
-            prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
-            numBytesRequested: 256 / 8));
     }
 }

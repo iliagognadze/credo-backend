@@ -1,7 +1,7 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Credo.API.Extensions;
 using Credo.Application.Commands;
+using Credo.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +33,7 @@ builder.Services.AddAuthorization();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureRepository();
+builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureOptions(builder.Configuration);
 builder.Services.ConfigureMediator();
 builder.Services.ConfigureSwagger();
@@ -64,11 +65,10 @@ auth.MapPost("", async (
 var users = app.MapGroup("api/users").WithTags("users");
 
 users.MapPost("", async (
-    [FromServices] IMediator mediator,
-    [FromBody] UserForCreationDto userForCreation) => 
-{
-    
-});
+            [FromServices] IMediator mediator,
+            [FromBody] UserForCreationDto userForCreation) => 
+        Results.Created("users", await mediator.Send(new CreateUserCommand(userForCreation))))
+    .Produces<UserDto>();
 
 #endregion
 
@@ -77,10 +77,9 @@ users.MapPost("", async (
 var applications = app.MapGroup("api/applications").WithTags("applications");
 
 applications.MapGet("", async (
-    [FromServices] IMediator mediator) =>
-{
-    
-});
+        HttpContext httpContext,
+        [FromServices] IMediator mediator) =>
+    Results.Ok(await mediator.Send(new GetApplicationsByUserIdQuery(httpContext.User.Claims))));
 
 applications.MapGet("{id:int}", async (
     [FromServices] IMediator mediator,
@@ -90,11 +89,31 @@ applications.MapGet("{id:int}", async (
 }).RequireAuthorization();
 
 applications.MapPost("", async (
-    [FromServices] IMediator mediator,
-    [FromBody] ApplicationForCreationDto applicationForCreation) =>
-{
+            HttpContext httpContext,
+            [FromServices] IMediator mediator,
+            [FromBody] ApplicationForCreationDto applicationForCreation) =>
+    {
+        var claims = httpContext.User.Claims;
+        
+        return Results.Created("applications",
+            await mediator.Send(new CreateApplicationCommand(applicationForCreation, claims)));
+    })
+    .RequireAuthorization()
+    .Produces<ApplicationDto>();
 
-});
+applications.MapPut("{id:int}", async (
+        HttpContext httpContext,
+        int id,
+        [FromServices] IMediator mediator,
+        [FromBody] ApplicationForUpdateDto applicationForUpdate) =>
+    {
+        var claims = httpContext.User.Claims;
+
+        await mediator.Send(new UpdateApplicationCommand(id, applicationForUpdate, claims));
+
+        return Results.NoContent();
+    })
+    .RequireAuthorization();
 
 #endregion
 

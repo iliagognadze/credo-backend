@@ -10,8 +10,8 @@ public class ApplicationRepository : RepositoryBase<Application>, IApplicationRe
     {
     }
 
-    public async Task<List<Application>> GetAsync(CancellationToken token, bool trackChanges = false) =>
-        await FindAll(trackChanges)
+    public async Task<List<Application>> GetByUserIdAsync(int userId, CancellationToken token, bool trackChanges = false) =>
+        await FindByCondition(application => application.UserId == userId, trackChanges)
             .ToListAsync(token);
 
     public async Task<Application?> GetAsync(int id, CancellationToken token, bool trackChanges = false) =>

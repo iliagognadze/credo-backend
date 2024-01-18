@@ -13,6 +13,10 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
     public async Task<User?> GetAsync(string email, string password, CancellationToken token, bool trackChanges = false) =>
         await FindByCondition(user => user.Email == email && user.Password == password, trackChanges)
             .FirstOrDefaultAsync(token);
+    
+    public async Task<User?> GetAsync(int id, CancellationToken token, bool trackChanges = false) =>
+        await FindByCondition(user => user.Id == id, trackChanges)
+            .FirstOrDefaultAsync(token);
 
     public async Task CreateAsync(User user) => await Create(user);
 }
