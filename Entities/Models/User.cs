@@ -4,7 +4,7 @@ using Entities.Constants;
 
 namespace Entities.Models;
 
-[Table("users", Schema = "user")]
+[Table("users")]
 public class User
 {
     [Column("id")]

@@ -1,6 +1,11 @@
-﻿namespace Repository;
+﻿using Repository.Contracts;
 
-public class RepositoryManager
+namespace Repository;
+
+public class RepositoryManager : IRepositoryManager
 {
-    
+    public Task SaveChangesAsync()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -314,6 +314,16 @@
         "build": {
           "buildTransitive/netcoreapp3.1/_._": {}
         }
+      },
+      "Repository.Contracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Repository.Contracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Repository.Contracts.dll": {}
+        }
       }
     }
   },
@@ -711,11 +721,17 @@
         "system.runtime.compilerservices.unsafe.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Repository.Contracts/1.0.0": {
+      "type": "project",
+      "path": "../Repository.Contracts/Repository.Contracts.csproj",
+      "msbuildProject": "../Repository.Contracts/Repository.Contracts.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "Npgsql.EntityFrameworkCore.PostgreSQL >= 6.0.22"
+      "Npgsql.EntityFrameworkCore.PostgreSQL >= 6.0.22",
+      "Repository.Contracts >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -744,7 +760,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\iliag\\source\\repos\\Credo\\Repository.Contracts\\Repository.Contracts.csproj": {
+              "projectPath": "C:\\Users\\iliag\\source\\repos\\Credo\\Repository.Contracts\\Repository.Contracts.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
