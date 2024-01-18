@@ -22,7 +22,7 @@ public static class ServiceExtensions
         services.AddDbContext<RepositoryContext>(opts =>
             opts.UseNpgsql(configuration.GetConnectionString("DefaultConnection")!, options =>
             {
-                options.MigrationsHistoryTable(HistoryRepository.DefaultTableName);
+                options.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "public");
             }));
 
     public static void ConfigureRepository(this IServiceCollection services) =>
