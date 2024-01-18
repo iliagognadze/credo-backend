@@ -4,6 +4,7 @@ using Credo.Application.Commands;
 using Credo.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shared.DTOs;
@@ -37,8 +38,15 @@ builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureOptions(builder.Configuration);
 builder.Services.ConfigureMediator();
 builder.Services.ConfigureSwagger();
+builder.Services.AddCors();
 
 var app = builder.Build();
+
+app.UseCors(opts =>
+{
+    opts.AllowAnyOrigin();
+    opts.AllowAnyMethod();
+});
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 app.ConfigureExceptionHandler(logger);
