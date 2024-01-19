@@ -19,4 +19,6 @@ public class ApplicationRepository : RepositoryBase<Application>, IApplicationRe
             .FirstOrDefaultAsync(token);
 
     public async Task CreateAsync(Application application) => await Create(application);
+
+    public void Remove(Application application) => Delete(application);
 }

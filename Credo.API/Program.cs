@@ -4,7 +4,6 @@ using Credo.Application.Commands;
 using Credo.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shared.DTOs;
@@ -38,15 +37,19 @@ builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureOptions(builder.Configuration);
 builder.Services.ConfigureMediator();
 builder.Services.ConfigureSwagger();
-builder.Services.AddCors();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost",
+        corsPolicyBuilder => corsPolicyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 var app = builder.Build();
 
-app.UseCors(opts =>
-{
-    opts.AllowAnyOrigin();
-    opts.AllowAnyMethod();
-});
+app.UseCors("AllowLocalhost");
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 app.ConfigureExceptionHandler(logger);
@@ -87,14 +90,8 @@ var applications = app.MapGroup("api/applications").WithTags("applications");
 applications.MapGet("", async (
         HttpContext httpContext,
         [FromServices] IMediator mediator) =>
-    Results.Ok(await mediator.Send(new GetApplicationsByUserIdQuery(httpContext.User.Claims))));
-
-applications.MapGet("{id:int}", async (
-    [FromServices] IMediator mediator,
-    int id) =>
-{
-    
-}).RequireAuthorization();
+    Results.Ok(await mediator.Send(new GetApplicationsByUserIdQuery(httpContext.User.Claims))))
+    .RequireAuthorization();
 
 applications.MapPost("", async (
             HttpContext httpContext,
@@ -105,6 +102,20 @@ applications.MapPost("", async (
         
         return Results.Created("applications",
             await mediator.Send(new CreateApplicationCommand(applicationForCreation, claims)));
+    })
+    .RequireAuthorization()
+    .Produces<ApplicationDto>();
+
+applications.MapDelete("/{id:int}", async (
+        int id,
+        HttpContext httpContext,
+        [FromServices] IMediator mediator) =>
+    {
+        var claims = httpContext.User.Claims;
+        
+        await mediator.Send(new DeleteApplicationCommand(id, claims));
+
+        return Results.NoContent();
     })
     .RequireAuthorization()
     .Produces<ApplicationDto>();
@@ -125,7 +136,11 @@ applications.MapPut("{id:int}", async (
 
 #endregion
 
+app.UseCors("AllowLocalhost");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors("AllowLocalhost");
 
 app.Run();
