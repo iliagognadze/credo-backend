@@ -40,7 +40,7 @@ builder.Services.ConfigureSwagger();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost",
+    options.AddPolicy("CorsPolicy",
         corsPolicyBuilder => corsPolicyBuilder
             .AllowAnyOrigin()
             .AllowAnyMethod()
@@ -49,7 +49,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowLocalhost");
+app.UseCors("CorsPolicy");
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 app.ConfigureExceptionHandler(logger);
@@ -136,9 +136,9 @@ applications.MapPut("{id:int}", async (
 
 #endregion
 
-app.UseCors("AllowLocalhost");
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
 
 app.Run();
