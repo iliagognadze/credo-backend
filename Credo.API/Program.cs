@@ -141,6 +141,4 @@ app.UseCors("AllowLocalhost");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowLocalhost");
-
 app.Run();
