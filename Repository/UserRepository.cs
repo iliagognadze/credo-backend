@@ -18,5 +18,13 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         await FindByCondition(user => user.Id == id, trackChanges)
             .FirstOrDefaultAsync(token);
 
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken token, bool trackChanges = false) =>
+        await FindByCondition(user => user.Email == email, trackChanges)
+            .FirstOrDefaultAsync(token);
+
+    public async Task<User?> GetByPrivateNumberAsync(string privateNumber, CancellationToken token, bool trackChanges = false) =>
+        await FindByCondition(user => user.PrivateNumber == privateNumber, trackChanges)
+            .FirstOrDefaultAsync(token);
+
     public async Task CreateAsync(User user) => await Create(user);
 }
