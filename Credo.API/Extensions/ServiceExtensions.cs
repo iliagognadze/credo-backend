@@ -1,10 +1,16 @@
 ﻿using System.Reflection;
+using Amazon;
+using Amazon.CloudWatchLogs;
+using Amazon.Internal;
+using Amazon.Runtime;
 using Credo.Application;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
 using Repository;
 using Repository.Contracts;
+using Serilog;
+using Serilog.Sinks.AwsCloudWatch;
 using Shared.Options;
 
 namespace Credo.API.Extensions;
@@ -40,4 +46,27 @@ public static class ServiceExtensions
     public static void ConfigureMediator(this IServiceCollection services) => 
         services.AddMediatR(configuration =>
             configuration.RegisterServicesFromAssembly(typeof(ApplicationAssembly).Assembly));
+    
+    public static void ConfigureLogger(this IHostBuilder host, WebApplicationBuilder builder) =>
+        host.ConfigureLogging((_, logging) =>
+        {
+            logging.ClearProviders();
+
+            var client = new AmazonCloudWatchLogsClient(new BasicAWSCredentials(
+                    builder.Configuration["Logger:Credentials:AccessKey"],
+                    builder.Configuration["Logger:Credentials:SecretKey"]), 
+                RegionEndpoint.GetBySystemName(builder.Configuration["Logger:Region"]));
+            
+            var logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.AmazonCloudWatch(
+                    logGroup: $"{builder.Environment.EnvironmentName}/{builder.Environment.ApplicationName}",
+                    logStreamPrefix: DateTime.UtcNow.ToString("yyyyMMddHHmmssfff"),
+                    cloudWatchClient: client
+                )
+                .CreateLogger();
+
+            logging.AddSerilog(logger);
+            builder.Services.AddSingleton(logger);
+        });
 }

@@ -8,6 +8,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using MediatR;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Contracts;
@@ -29,18 +30,23 @@ public class GenerateAccessTokenCommand : IRequest<AccessTokenDto>
 public class GenerateAccessTokenCommandHandler : IRequestHandler<GenerateAccessTokenCommand, AccessTokenDto>
 {
     private readonly IRepositoryManager _repository;
+    private readonly ILogger<GenerateAccessTokenCommandHandler> _logger;
     private readonly JwtSettings _jwtSettings;
 
     public GenerateAccessTokenCommandHandler(
         IRepositoryManager repository,
-        IOptions<JwtSettings> jwtSettingsOptions)
+        IOptions<JwtSettings> jwtSettingsOptions,
+        ILogger<GenerateAccessTokenCommandHandler> logger)
     {
         _repository = repository;
+        _logger = logger;
         _jwtSettings = jwtSettingsOptions.Value;
     }
     
     public async Task<AccessTokenDto> Handle(GenerateAccessTokenCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Auth request handler started processing...");
+        
         var user = await CheckUser(request.Authorization.Email, request.Authorization.Password, cancellationToken);
         
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key!));

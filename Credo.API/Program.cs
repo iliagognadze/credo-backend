@@ -37,6 +37,7 @@ builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureOptions(builder.Configuration);
 builder.Services.ConfigureMediator();
 builder.Services.ConfigureSwagger();
+builder.Host.ConfigureLogger(builder);
 
 builder.Services.AddCors(options =>
 {
@@ -54,11 +55,8 @@ app.UseCors("CorsPolicy");
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 app.ConfigureExceptionHandler(logger);
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 #region authorization
 
