@@ -4,6 +4,7 @@ using Amazon.CloudWatchLogs;
 using Amazon.Internal;
 using Amazon.Runtime;
 using Credo.Application;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.OpenApi.Models;
@@ -69,4 +70,17 @@ public static class ServiceExtensions
             logging.AddSerilog(logger);
             builder.Services.AddSingleton(logger);
         });
+
+    public static void ConfigureHttpLogging(this IServiceCollection services)
+    {
+        services.AddHttpLogging(logging =>
+        {
+            logging.LoggingFields = HttpLoggingFields.All;
+            logging.RequestHeaders.Add("sec-ch-ua");
+            logging.ResponseHeaders.Add("MyResponseHeader");
+            logging.MediaTypeOptions.AddText("application/javascript");
+            logging.RequestBodyLogLimit = 4096;
+            logging.ResponseBodyLogLimit = 4096;
+        });
+    }
 }

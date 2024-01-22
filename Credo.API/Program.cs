@@ -4,6 +4,7 @@ using Credo.Application.Commands;
 using Credo.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shared.DTOs;
@@ -38,6 +39,7 @@ builder.Services.ConfigureOptions(builder.Configuration);
 builder.Services.ConfigureMediator();
 builder.Services.ConfigureSwagger();
 builder.Host.ConfigureLogger(builder);
+builder.Services.ConfigureHttpLogging();
 
 builder.Services.AddCors(options =>
 {
@@ -49,6 +51,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.UseHttpLogging();
 
 app.UseCors("CorsPolicy");
 
