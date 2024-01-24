@@ -62,6 +62,8 @@ app.ConfigureExceptionHandler(logger);
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseHttpsRedirection();
+
 #region authorization
 
 var auth = app.MapGroup("api/auth").WithTags("auth");
